@@ -9,10 +9,13 @@
     .\create_folder_files.ps1 .\folder_list.txt
 #>
 
+Param(
+    [parameter(mandatory = $true)][string]$file
+)
+
 $scriptpath = $MyInvocation.MyCommand.Path
 $dir = Split-Path $scriptpath
-
-$folderList = Get-Content $dir'\folder_list.txt'
+$folderList = Get-Content $dir$file
 $rowCount = $folderList | Measure-Object
 
 # checkFileFolder checks if the file path is a directory or a file and returns its respective messages
