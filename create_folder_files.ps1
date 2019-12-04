@@ -25,15 +25,18 @@ function checkFileFolder {
     if (Test-Path $listItem) {
         # if ($listItem.PSISContainer) {
         if ((Get-Item $listItem) -is [System.IO.DirectoryInfo]) {
-        Write-Host "SUCCESS: Folder $listItem created." -ForegroundColor Green
-        } else {
+            Write-Host "SUCCESS: Folder $listItem created." -ForegroundColor Green
+        }
+        else {
             Write-Host "SUCCESS: File $listItem created." -ForegroundColor Green
         }
-    } else {
+    }
+    else {
         # if ($listItem.PSISContainer) {
         if ((Get-Item $listItem) -is [System.IO.DirectoryInfo]) {
             Write-Host "ERROR: Unable to create $listItem folder." -ForegroundColor Red
-        } else {
+        }
+        else {
             Write-Host "ERROR: Unable to create $listItem file." -ForegroundColor Red
         }
     }
@@ -44,27 +47,30 @@ function createFolderFiles {
 
     $x = Test-Path $listItem
 	
-	# Check if folder path exists
-	if($x){ 
+    # Check if folder path exists
+    if ($x) { 
         Write-Host "INFO: $listItem exists."
-    } else {
-		# Check if folder path contains files
-		if ($listItem -cmatch '\.[\w]+$') {
+    }
+    else {
+        # Check if folder path contains files
+        if ($listItem -cmatch '\.[\w]+$') {
 
-			# Create Notification.txt and notify.txt files
-			if($listItem.Contains("Notification.txt") -or $listItem.Contains("notify.txt")) {
+            # Create Notification.txt and notify.txt files
+            if ($listItem.Contains("Notification.txt") -or $listItem.Contains("notify.txt")) {
                 [void](New-Item $listItem -type file)
                 checkFileFolder -listItem $listItem
-			} else {
+            }
+            else {
                 Write-Host "WARNING: Skipped file. Did not create $listItem" -ForegroundColor Yellow
             }
-		} else {
+        }
+        else {
             [void](New-Item $listItem -type directory)
             checkFileFolder -listItem $listItem
-		}
-	}
+        }
+    }
 }
 
-for($i = 0; $i -le ($rowCount.Count - 1); $i++){
+for ($i = 0; $i -le ($rowCount.Count - 1); $i++) {
     createFolderFiles -listItem $folderList[$i]
 }
